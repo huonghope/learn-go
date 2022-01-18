@@ -9,4 +9,7 @@ func main() {
 	{
 		fmt.Println("5 이상")
 	}
+	if i >= 5	{
+		fmt.Println("5 이상")
+	}
 }
