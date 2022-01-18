@@ -3,6 +3,8 @@ package main
 import "fmt"
 
 func main() {
+	
+	// Các giá trị phía sau sẽ bằng căn bặc 2 của 2
 	const (
 		a = 1 << iota // a == 1 (1 << 0)
 		b = 1 << iota // b == 2 (1 << 1)

@@ -3,6 +3,8 @@ package main
 import "fmt"
 
 func main() {
+
+	// Các giá trị phía sau sẽ gắn tự động tăng lên 1 đơn vị
 	const (
 		Sunday       = iota // 0
 		Monday              // 1

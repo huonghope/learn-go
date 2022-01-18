@@ -3,6 +3,8 @@ package main
 import "fmt"
 
 func main() {
+	
+	//Định nghĩa 1 lần nhiều biến
 	const (
 		Sunday       = 0
 		Monday       = 1

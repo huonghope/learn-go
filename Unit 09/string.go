@@ -4,13 +4,12 @@ import "fmt"
 
 func main() {
 	var s1 string = "Hello, world!\n"
-	var s2 string = "¾È³çÇÏ¼¼¿ä\n"
-	var s3 string = "\ud55c\uae00"             // ÇÑ±Û: À¯´ÏÄÚµå ¹®ÀÚ ÄÚµå·Î ÀúÀå
-	var s4 string = "\U0000d55c\U0000ae00"     // ÇÑ±Û: À¯´ÏÄÚµå ¹®ÀÚ ÄÚµå·Î ÀúÀå
-	var s5 string = "\xed\x95\x9c\xea\xb8\x80" // ÇÑ±Û: UTF-8 ÀÎÄÚµùÀÇ ¹ÙÀÌÆ® °ªÀ¸·Î ÀúÀå
+	var s2 string = "Hello go\n"
+	var s3 string = "\ud55c\uae00"   //í•œê¸€          
+	var s4 string = "\U0000d55c\U0000ae00"  //í•œê¸€    
+	var s5 string = "\xed\x95\x9c\xea\xb8\x80" //í•œê¸€
 
-	var s7 string = `¾È³çÇÏ¼¼¿ä
-	Hello, world!`
+	var s7 string = `I said Hello, world!`
 
 	fmt.Println(s1)
 	fmt.Println(s2)
