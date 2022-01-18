@@ -4,7 +4,7 @@ import "fmt"
 
 func main() {
 Loop:
-	fmt.Println("begin for loop") // 들어가면 안 되는 코드
+	fmt.Println("begin for loop") // 들어가면 안 되는 코드 - ERROR
 	for i := 0; i < 3; i++ {
 		for j := 0; j < 3; j++ {
 			if j == 2 {
@@ -14,6 +14,6 @@ Loop:
 			fmt.Println(i, j)
 		}
 	}
-
 	fmt.Println("Hello, world!")
+
 }

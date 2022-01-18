@@ -11,6 +11,8 @@ func main() {
 		fmt.Println(b)
 	}
 
+// Sẽ chạy ngay khi if loop được đi vào
+// Các câu lệnh bên dưới goto sẽ không được chạy nữa
 ERROR:
 	fmt.Println("Error")
 }

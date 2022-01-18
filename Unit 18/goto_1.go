@@ -22,10 +22,12 @@ func main() {
 
 	return
 
+// Định nghĩa 1 biến goto đơn giản ERROR 1
 ERROR1: // 에러 처리 1
 	fmt.Println("Error 1")
 	return
 
+// Định nghĩa 1 biến goto đơn giản ERROR 2
 ERROR2: // 에러 처리 2
 	fmt.Println("Error 2")
 	return

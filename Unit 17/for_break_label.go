@@ -9,7 +9,6 @@ Loop: // Loop 레이블을 지정
 			if j == 2 {        // j가 2일 때
 				break Loop // 중첩된 반복문을 빠져나옴
 			}
-
 			fmt.Println(i, j)
 		}
 	}

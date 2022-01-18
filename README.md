@@ -43,3 +43,36 @@ func main() {
 }
 
 ```
+### <a href="https://github.com/huonghope/learn-go/tree/master/Unit%2017" target="_blank"> Unit 17: For loop, for-continue, for-break, for-error, for-infinitie </a>
+### <a href="https://github.com/huonghope/learn-go/tree/master/Unit%2018" target="_blank"> Unit 18: Goto </a>
+### <a href="https://github.com/huonghope/learn-go/tree/master/Unit%2019" target="_blank"> Unit 19: Switch, switch-expression, swith-multiple </a>
+```go
+package main
+
+import "fmt"
+
+func main() {
+	i := 3
+
+	switch i {
+	case 2, 4, 6: // i가 2, 4, 6일 때
+		fmt.Println("짝수")
+	case 1, 3, 5: // i가 1, 3, 5일 때
+		fmt.Println("홀수")
+	}
+  
+  for i := 1; i <= 100; i++ {
+		switch {                         // case에 조건식을 지정했으므로 판단할 변수는 생략
+		case i%3 == 0 && i%5 == 0:       // 3의 배수이면서 5의 배수일 때
+			fmt.Println("FizzBuzz")  // FizzBuzz 출력
+		case i%3 == 0:                   // 3의 배수일 때
+			fmt.Println("Fizz")      // Fizz 출력
+		case i%5 == 0:                   // 5의 배수일 때
+			fmt.Println("Buzz")      // Buzz 출력
+		default:                         // 아무 조건에도 해당하지 않을 때
+			fmt.Println(i)           // 숫자 출력
+		}
+	}
+}
+```
+### <a href="https://github.com/huonghope/learn-go/tree/master/Unit%2020" target="_blank"> Unit 20: For-switch,case-multi </a>

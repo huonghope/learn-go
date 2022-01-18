@@ -4,7 +4,10 @@ import "fmt"
 
 func main() {
 	i := 3
-
+	/**
+	fallthrough : nếu thêm vào thì sẽ run thêm 1 dòng lệnh case ngay dưới bên cạnh
+	VD: ở trường hợp dưới, vì tất cả các case đều thêm fallthrough lên tất cả sẽ chạy
+	*/
 	switch i {                    // 값을 판단할 변수 설정
 	case 4:                       // 각 조건에 일치하는
 		fmt.Println("4 이상") // 코드를 실행합니다.
