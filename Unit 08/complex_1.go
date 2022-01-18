@@ -3,6 +3,7 @@ package main
 import "fmt"
 
 func main() {
+	// Số phức - Sẽ chia ra làm số thực và số ảo
 	var num1 complex64 = 1 + 2i           // 실수부 1, 허수부 2i
 	var num2 complex64 = 4.2342 + 2.3527i // 실수부 고정소수점 4.2342, 
 	                                      // 허수부 고정소수점 2.3527i
@@ -12,7 +13,7 @@ func main() {
 	var num5 complex128 = 1 + 2i                   // 실수부 1, 허수부 2i
 	var num6 complex128 = 5.32521e-10 + .12345E+2i // 실수부 부동소수점 5.32521e-10, 
 	                                               // 허수부 부동소수점 .12345E+2i
-
+	// DÙng real và imag để xuất ra 2 số thực và số ảo
 	var r1 float32 = real(num1) // num1의 실수부 1
 	var i1 float32 = imag(num1) // num1의 허수부 2
 

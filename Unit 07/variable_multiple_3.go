@@ -3,6 +3,8 @@ package main
 import "fmt"
 
 func main() {
+
+	// Định nghĩa trước các kiểu của biến số, Ở đây là kiểu INT
 	var x, y int
 	var age int
 
