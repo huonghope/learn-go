@@ -5,5 +5,6 @@ import "fmt"
 func main() {
 	var s1 string = "Hello"
 
-	fmt.Printf("%c\n", s1[1]) // e: ¹®ÀÚ¿­¿¡¼­ µÎ ¹øÂ° ¹®ÀÚ e
+	// Äá»‹nh nghÄ©a vÃ  coi Ä‘Ã³ nhÆ° 1 array
+	fmt.Printf("%c\n", s1[1])  // print e
 }

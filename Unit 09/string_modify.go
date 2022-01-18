@@ -5,9 +5,9 @@ import "fmt"
 func main() {
 	var s1 string = "Hello, world!\n"
 
-	s1 = "abcdefg" // ´Ù¸¥ ¹®ÀÚ¿­À» ´ëÀÔÇÒ ¼ö ÀÖÀ½
+	s1 = "abcdefg" // gáº¯n giÃ¡ trá»‹ cho biáº¿n s1
 
-	fmt.Println(s1[0]) // 97: ASCII ÄÚµå a, ¹è¿­ ÇüÅÂ·Î °¢ ¹®ÀÚ¿¡ Á¢±Ù
+	fmt.Println(s1[0]) // print = 97
 
-	s1[0] = 'z' // ÄÄÆÄÀÏ ¿¡·¯
+	s1[0] = 'z' // Thay Ä‘á»•i biáº¿n Ä‘áº§u cá»§a s1
 }

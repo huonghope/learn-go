@@ -3,9 +3,9 @@ package main
 import "fmt"
 
 func main() {
-	var s1 string = "ÇÑ±Û"
-	var s2 string = "Hello"
+	var s1 string = "Hello"
+	var s2 string = "World"
 
-	fmt.Println(len(s1)) // 6: UTF-8 ÀÎÄÚµùÀÇ ¹ÙÀÌÆ® ±æÀÌÀÌ¹Ç·Î 6
-	fmt.Println(len(s2)) // 5: ¾ËÆÄºª 5±ÛÀÚÀÌ¹Ç·Î 5
+	fmt.Println(len(s1)) // 6: UTF-8 ï¿½ï¿½ï¿½Úµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½Ì¹Ç·ï¿½ 6
+	fmt.Println(len(s2)) // 5: ï¿½ï¿½ï¿½Äºï¿½ 5ï¿½ï¿½ï¿½ï¿½ï¿½Ì¹Ç·ï¿½ 5
 }
