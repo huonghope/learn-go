@@ -60,7 +60,7 @@ func main() {
 	case 1, 3, 5: // i가 1, 3, 5일 때
 		fmt.Println("홀수")
 	}
-  
+
   for i := 1; i <= 100; i++ {
 		switch {                         // case에 조건식을 지정했으므로 판단할 변수는 생략
 		case i%3 == 0 && i%5 == 0:       // 3의 배수이면서 5의 배수일 때
@@ -76,3 +76,68 @@ func main() {
 }
 ```
 ### <a href="https://github.com/huonghope/learn-go/tree/master/Unit%2020" target="_blank"> Unit 20: For-switch,case-multi </a>
+### <a href="https://github.com/huonghope/learn-go/tree/master/Unit%2020" target="_blank"> Unit 21: Array, Array for len, Array for range </a>
+```go
+package main
+
+import "fmt"
+
+func main() {
+	var myArray [5]int // int형이며 길이가 5인 배열 선언
+
+	myArray[2] = 7     // 배열의 세 번째 요소에 7 대입
+
+  var a [5]int = [5]int{32, 29, 78, 16, 81} // int형이며 길이가 5인 배열을 선언하고 초기화
+	var b = [5]int{32, 29, 78, 16, 81}        // 배열을 선언할 때 자료형과 길이 생략
+	c := [5]int{32, 29, 78, 16, 81}           // 배열을 선언할 때 var 키워드, 자료형과 길이 생략
+
+
+	bArray := [5]int{
+		32,
+		29,
+		78,
+		16,
+		81, // 여러 줄로 나열할 때는 마지막 요소에 콤마를 붙임
+	}
+
+	cArray := [...]int{32, 29, 78, 16, 81} // 초기화할 요소가 5개이며 ...을 사용했으므로 
+	                                  // 배열 크기는 5로 설정됨
+
+	dArray := [...]string{"Maria", "Andrew", "Jonh"} // 초기화할 요소가 3개이며 ...을 사용했으므로 
+	                                            // 배열 크기는 3으로 설정됨
+
+	fmt.Println(myArray) // [0 0 7 0 0]
+	fmt.Println(a)
+	fmt.Println(b)
+	fmt.Println(c)
+	fmt.Println(aArray)
+	fmt.Println(bArray)
+	fmt.Println(cArray)
+
+
+  a := [5]int{32, 29, 78, 16, 81}
+
+	for value := range a { // value에는 값 대신 인덱스가 들어감
+		fmt.Println(value)
+	}
+
+  for _, value := range a { // 인덱스는 생략, value에 배열 요소의 값이 들어감
+		fmt.Println(value)
+	}
+
+  for i, value := range a { // i에는 인덱스, value에는 배열 요소의 값이 들어감
+		fmt.Println(i, value)
+	}
+
+  a := [3][3]int{
+		{1, 2, 3},
+		{4, 5, 6},
+		{7, 8, 9},
+	}
+
+	fmt.Println(a)
+
+
+}
+
+```
