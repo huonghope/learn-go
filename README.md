@@ -179,7 +179,7 @@ func main() {
 	fmt.Println(b)              // [1 2 3 4 5 6]
 }
 ```
-### <a href="https://github.com/huonghope/learn-go/tree/master/Unit%2021" target="_blank"> Unit 23: Map, Map-delete, Map-range </a>
+### <a href="https://github.com/huonghope/learn-go/tree/master/Unit%2023" target="_blank"> Unit 23: Map, Map-delete, Map-range, Map-in-map </a>
 ```go
 package main
 
@@ -261,6 +261,165 @@ func main() {
 	}
 
 	fmt.Println(terrestrialPlanet["Mars"]["mass"]) // 6.4185E+2
+}
+
+```
+### <a href="https://github.com/huonghope/learn-go/tree/master/Unit%2024" target="_blank"> Unit 24: Function, function-map </a>
+```go
+package main
+
+import "fmt"
+
+func main() {
+	func() { // 함수에 이름이 없음
+		fmt.Println("Hello, world!")
+	}()
+
+	func(s string) {   // 익명 함수를 정의한 뒤
+		fmt.Println(s)
+	}("Hello, world!") // 바로 호출
+
+	// Định nghĩa hàm và gọi hàm luôn, truyền vào 2 tham số tương đương là 1 và 2
+	r := func(a int, b int) int { // 익명 함수를 정의한 뒤
+		return a + b
+	}(1, 2)                       // 바로 호출하여 리턴값을 변수 r에 저장
+
+	fmt.Println(r) // 3
+}
+
+// Thêm kiểu dữ liệu ở sau giấy () để biểu trị kiểu của biến return
+func sum(a int, b int) int { // int형 매개변수 a, b 그리고 int 형 리턴값을 가지는 함수 정의
+	return a + b
+}
+```
+```go
+package main
+
+import "fmt"
+
+func sum(a int, b int) int {
+	return a + b
+}
+
+func diff(a int, b int) int {
+	return a - b
+}
+
+func main() {
+	// Khai báo biến f, gồm 2 key là sum và diff, value của 2 key này chính là phần định nghĩa của 2 hàm
+	// khi gọi hàm sẽ truyền vào 2 giá trị để nhận lại kết quả của 2 hàm
+	f := map[string]func(int, int) int{ // 함수를 저장할 수 있는 맵을 생성한 뒤 함수로 초기화
+		"sum":  sum,
+		"diff": diff,
+	}
+
+	fmt.Println(f["sum"](1, 2))  // 3: 맵에 sum 키를 지정하여 함수 호출
+	fmt.Println(f["diff"](1, 2)) // -1: 맵에 diff 키를 지정하여 함수 호출
+}
+```
+```go
+package main
+
+import "fmt"
+
+// Định nghĩa 2 hàm số, nhưng sẽ trả về 2 giá trị
+func SumAndDiff(a int, b int) (int, int) { // int형 리턴값이 두 개인 함수 정의
+	return a + b, a - b // 리턴할 값 또는 변수를 차례대로 나열. 합과 차를 동시에 리턴
+}
+
+// Định nghĩa trước 2 biến return, sẽ tự động return ra 2 biến này trong quá trình tính logic trong hàm
+func SumAndDiff(a int, b int) (sum int, diff int) { // 리턴값을 각각 sum, diff로 이름을 정함
+	sum = a + b  // 리턴값 변수 sum에 합 대입
+	diff = a - b // 리턴값 변수 diff에 차 대입
+	return
+}
+
+func hello() (int, int, int, int, int) {
+	return 1, 2, 3, 4, 5 // 리턴할 값을 차례대로 나열
+}
+
+// Cách gọi hàm đồng quy
+func factorial(n uint64) uint64 {
+	if n == 0 {
+		return 1
+	}
+
+	return n * factorial(n-1)
+}
+
+func main() {
+	sum, diff := SumAndDiff(6, 2) // 변수 두 개에 리턴값 두 개를 대입
+	fmt.Println(sum, diff)        // 8 4: 합과 차
+
+	// Với trường hợp nếu không muốn sử dụng biến đầu tiên, dùng toán tử _ để k quan tâm
+	_, diff := SumAndDiff(6, 2) // 첫 번째 리턴값은 _으로 생략, 두 번째 리턴값만 사용
+	fmt.Println(diff)           // 4: 차
+
+	// Tương tự như ví dụ trên
+	a, _, c, _, e := hello() // 2, 4번째 리턴값은 생략
+	fmt.Println(a, c, e)     // 1 3 5
+}
+```
+```go
+package main
+
+import "fmt"
+
+func sum(a int, b int) int {
+	return a + b
+}
+
+func diff(a int, b int) int {
+	return a - b
+}
+
+func main() {
+	// Dùng slice để định nghĩa 1 array, gồm 2 mảng
+	// Giá trị thứ 0 của mảng là hàm sum
+	// Giá trị thứ 1 của mảng là hàm diff
+	// Khi gọi đến giá trị, truyền vào biến sẽ nhận lại được giá trị tính toán của hàm
+	f := []func(int, int) int{sum, diff} // 함수를 저장할 수 있는 슬라이스를 생성한 뒤 함수로 초기화
+
+	fmt.Println(f[0](1, 2)) // 3: 배열의 첫 번째 요소로 함수 호출
+	fmt.Println(f[1](1, 2)) // -1: 배열의 두 번째 요소로 함수 호출
+}
+```
+```go
+package main
+
+import "fmt"
+
+// n sẽ biểu thị nhận vào tất cả các giá trị khi truyền vào qua hàm
+// giống như js6
+func sum(n ...int) int { // int형 가변인자를 받는 함수 정의
+	total := 0
+	for _, value := range n { // range로 가변인자의 모든 값을 꺼냄
+		total += value   // 꺼낸 값을 모두 더함
+	}
+
+	return total
+}
+
+func sumNumber(a int, b int) int {
+	return a + b
+}
+
+func main() {
+	r := sum(1, 2, 3, 4, 5)
+	fmt.Println(r) // 15
+
+	// Lưu ý dấu ... ở đằng sau tên biến
+	n := []int{1, 2, 3, 4, 5}
+	r := sum(n...) // ...를 사용하여 가변인자에  // 슬라이스를 바로 넘겨줌
+	fmt.Println(r) // 15
+
+	// Khai báo biến hàm
+	// int được hiểu là biến sẽ lưu kết quả của biếm số và sumNumber là hàm sẽ triển khai thaanc của hàm khai báo trước đó
+	var hello func(a int, b int) int = sumNumber // 함수를 저장하는 변수를 선언하고 함수 대입
+	world := sumNumber                           // 변수 선언과 동시에 함수를 바로 대입
+
+	fmt.Println(hello(1, 2)) // 3: hello 변수에 저장된 sum 함수 호출
+	fmt.Println(world(1, 2)) // 3: world 변수에 저장된 sum 함수 호출
 }
 
 ```
