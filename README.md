@@ -76,7 +76,7 @@ func main() {
 }
 ```
 ### <a href="https://github.com/huonghope/learn-go/tree/master/Unit%2020" target="_blank"> Unit 20: For-switch,case-multi </a>
-### <a href="https://github.com/huonghope/learn-go/tree/master/Unit%2020" target="_blank"> Unit 21: Array, Array for len, Array for range </a>
+### <a href="https://github.com/huonghope/learn-go/tree/master/Unit%2021" target="_blank"> Unit 21: Array, Array for len, Array for range </a>
 ```go
 package main
 
@@ -141,7 +141,7 @@ func main() {
 }
 
 ```
-### <a href="https://github.com/huonghope/learn-go/tree/master/Unit%2022" target="_blank"> Unit 19: Slice, Slice copy, len, Slice-sclicing </a>
+### <a href="https://github.com/huonghope/learn-go/tree/master/Unit%2022" target="_blank"> Unit 22: Slice, Slice copy, len, Slice-sclicing </a>
 ```go
 package main
 
@@ -178,4 +178,89 @@ func main() {
 	fmt.Println(len(b), cap(b)) // 6 8: 길이가 6이며 용량이 8인 슬라이스
 	fmt.Println(b)              // [1 2 3 4 5 6]
 }
+```
+### <a href="https://github.com/huonghope/learn-go/tree/master/Unit%2021" target="_blank"> Unit 23: Map, Map-delete, Map-range </a>
+```go
+package main
+
+import "fmt"
+
+func main() {
+
+	// Dùng make để tạo map
+	var a map[string]int = make(map[string]int) // make 함수로 키는 string 값은 int인 맵에 공간 할당
+	var b = make(map[string]int)                // 맵을 선언할 때 map 키워드와 자료형 생략
+	c := make(map[string]int)                   // 맵을 선언할 때 var, map 키워드와 자료형 생략
+
+	fmt.Println(a) //map[]
+	fmt.Println(b) //map[]
+	fmt.Println(c) //map[]
+
+	// Khai báo map với string là keyword và giá trị là int
+	a := map[string]int{"Hello": 10, "world": 20}
+
+	b := map[string]int{
+		"Hello": 10,
+		"world": 20, // 여러 줄로 나열할 때는 마지막 요소에 콤마를 붙임
+	}
+
+	// Dùng make để khai báo và tạo map, Sau đó sẽ khai báo các giá trị cơ bản
+	solarSystem := make(map[string]float32) // 키는 string, 값은 float32인 맵 생성 및 공간 할당
+	solarSystem["Mercury"] = 87.969 // 맵[키] = 값
+	solarSystem["Venus"] = 224.70069
+	solarSystem["Earth"] = 365.25641
+	solarSystem["Mars"] = 686.9600
+	solarSystem["Jupiter"] = 4333.2867
+	solarSystem["Saturn"] = 10756.1995
+	solarSystem["Uranus"] = 30707.4896
+	solarSystem["Neptune"] = 60223.3528
+
+	fmt.Println(solarSystem["Earth"]) // 365.25641
+
+	// Nếu k muốn sử dụng key thì dùng toán tử _
+	for _, value := range solarSystem { // 키 변수를 사용하고 싶지 않다면 _ 사용
+		fmt.Println(value)
+	}
+
+	// ok sẽ trả về 2 giá trị là true và false, nếu là true có nghĩ là với giá trị key đó sẽ trả về 1 giá trị tương đương
+	// ngược lại nếu là false thì sẽ không có giá trị tương đương
+	value, ok := solarSystem["Pluto"] // 맵에 키가 있는지 검사할 때는 리턴값을 두 개 활용
+	fmt.Println(value, ok)            // 0 false: 맵에 키가 없으면 두 번째 리턴값으로 false가 리턴됨
+
+	if value, ok := solarSystem["Saturn"]; ok {
+		fmt.Println(value) // 10756.1995
+	}
+
+	// Dùng toán tử delete để xóa 1 biến trong map, với giá trị keyword truyền vào
+	a := map[string]int{"Hello": 10, "world": 20}
+	delete(a, "world") // 맵 a에서 world 키 삭제
+	
+
+	// Khai báo map in map 
+	terrestrialPlanet := map[string]map[string]float32{
+		"Mercury": map[string]float32{
+			"meanRadius":    2439.7,
+			"mass":          3.3022E+23,
+			"orbitalPeriod": 87.969,
+		},
+		"Venus": map[string]float32{
+			"meanRadius":    6051.8,
+			"mass":          4.8676E+24,
+			"orbitalPeriod": 224.70069,
+		},
+		"Earth": map[string]float32{
+			"meanRadius":    6371.0,
+			"mass":          5.97219E+24,
+			"orbitalPeriod": 365.25641,
+		},
+		"Mars": map[string]float32{
+			"meanRadius":    3389.5,
+			"mass":          6.4185E+23,
+			"orbitalPeriod": 686.9600,
+		},
+	}
+
+	fmt.Println(terrestrialPlanet["Mars"]["mass"]) // 6.4185E+2
+}
+
 ```
