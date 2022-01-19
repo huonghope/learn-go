@@ -141,3 +141,41 @@ func main() {
 }
 
 ```
+### <a href="https://github.com/huonghope/learn-go/tree/master/Unit%2022" target="_blank"> Unit 19: Slice, Slice copy, len, Slice-sclicing </a>
+```go
+package main
+
+import "fmt"
+
+func main() {
+	var a []int = make([]int, 10) // make 함수로 int형에 길이가 5인 슬라이스에 공간 할당
+	var b = make([]int, 5)       // 슬라이스를 선언할 때 자료형과 [] 생략
+	c := make([]int, 5)          // 슬라이스를 선언할 때 var 키워드, 자료형과 [] 생략
+
+	fmt.Println(a)
+	fmt.Println(b)
+	fmt.Println(c)
+
+	a = append(a, b...) // 슬라이스 a에 슬라이스 b를 붙일 때는 b...을 씀
+
+	fmt.Println(a) // [1 2 3 4 5 6]
+
+	a := []int{1, 2, 3, 4, 5}
+
+	fmt.Println(a[:])        // [1 2 3 4 5]
+	fmt.Println(a[0:])       // [1 2 3 4 5]
+	fmt.Println(a[:5])       // [1 2 3 4 5]
+	fmt.Println(a[0:len(a)]) // [1 2 3 4 5]
+
+	fmt.Println(a[3:])       // [4 5]
+	fmt.Println(a[:3])       // [1 2 3]
+	fmt.Println(a[1:3])      // [2 3]
+
+
+// Slice Slicing Cap example
+	b := a[0:6:8] // 인덱스 0부터 6까지 가져와서 부분 슬라이스로 만들고 용량을 8로 설정
+
+	fmt.Println(len(b), cap(b)) // 6 8: 길이가 6이며 용량이 8인 슬라이스
+	fmt.Println(b)              // [1 2 3 4 5 6]
+}
+```
