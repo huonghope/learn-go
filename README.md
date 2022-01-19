@@ -423,3 +423,48 @@ func main() {
 }
 
 ```
+### <a href="https://github.com/huonghope/learn-go/tree/master/Unit%2025" target="_blank"> Unit 25: Closure </a>
+```go
+package main
+import "fmt"
+
+// Hàm trả về là 1 hàm số không tên, với tiền return giá trị int
+//              ↓ 리턴 값이 익명 함수
+func calc() func(x int) int {
+	a, b := 3, 5           // 지역 변수는 함수가 끝나면 소멸되지만
+	return func(x int) int {
+		return a*x + b // 클로저이므로 함수를 호출 할 때마다 변수 a와 b의 값을 사용할 수 있음
+	}
+	// ↑ 익명 함수를 리턴
+}
+
+
+//    ↓ 함수 안에서
+func main() {
+	//      ↓ 익명 함수를 선언 및 정의
+	sum := func(a, b int) int {
+		return a + b
+	}
+
+	r := sum(1, 2) // 익명함수 사용
+
+	fmt.Println(r) // 3
+
+	// Định nghĩa hàm và nhận 2 giá trị ở bên ngoài để tính toán luôn
+	a, b := 3, 5
+	f := func(x int) int {
+		return a*x + b // 함수 바깥의 변수 a, b 사용
+	}
+
+	y := f(5)
+	fmt.Println(y) // 20
+
+	f := calc() // calc 함수를 실행하여 리턴값으로 나온 클로저를 변수에 저장
+	fmt.Println(f(1)) // 8
+	fmt.Println(f(2)) // 11
+	fmt.Println(f(3)) // 14
+	fmt.Println(f(4)) // 17
+	fmt.Println(f(5)) // 20
+}
+
+```
