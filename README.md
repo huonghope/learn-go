@@ -468,3 +468,231 @@ func main() {
 }
 
 ```
+### <a href="https://github.com/huonghope/learn-go/tree/master/Unit%2026" target="_blank"> Unit 26: Defer </a>
+```go
+package main
+
+import "fmt"
+
+func hello() {
+	fmt.Println("Hello")
+}
+
+func world() {
+	fmt.Println("world")
+}
+func HelloWorld() {
+	//↓ HelloWorld() 함수가 끝나기 직전에 호출
+	defer func() {
+		fmt.Println("world")
+	}()
+
+	func() {
+		fmt.Println("Hello")
+	}()
+}
+
+func ReadHello() {
+	// Dùng defer để đóng file đã đọc ở cuối hàm
+	file, err := os.Open("hello.txt")
+	defer file.Close() // 지연 호출한 file.Close()가 맨 마지막에 호출됨
+
+	if err != nil {
+		fmt.Println(err)
+		return // file.Close() 호출
+	}
+
+	buf := make([]byte, 100)
+	if _, err = file.Read(buf); err != nil {
+		fmt.Println(err)
+		return // file.Close() 호출
+	}
+
+	fmt.Println(string(buf))
+	// file.Close() 호출
+}
+
+func main() {
+        //↓ 함수의 호출이 지연됨.
+	defer world() // 현재 함수(main())가 끝나기 직전에 호출
+	hello()
+	hello()
+	hello()
+	HelloWorld()
+
+	// 4 3 2 1 0 : sẽ bị đảo ngược
+	for i := 0; i < 5; i++ {
+		defer fmt.Printf("%d ", i)
+	}
+
+	ReadHello()
+}
+```
+### <a href="https://github.com/huonghope/learn-go/tree/master/Unit%2027" target="_blank"> Unit 27: Panic, Panic-recover </a> 
+```go
+package main
+
+import "fmt"
+
+func f() {
+	defer func() {         // recover 함수는 지연 호출로 사용해야 함
+		s := recover() // 패닉이 발생해도 프로그램을 종료하지 않음, panic 함수에서 설정한 에러 메시지를 받아옴
+		fmt.Println(s)
+	}()
+
+	panic("Error !!!") // panic 함수로 에러 메시지 설정, 패닉 발생
+}
+func checkingRecover() {
+	// Ở phần dưới có error tuy nhiên thông qua recover() đã khắc phục và chương trình vẫn chạy bthg
+	defer func() {
+		s := recover()   // recover 함수로 런타임 에러(패닉) 상황을 복구
+		fmt.Println(s)
+	}()
+
+	a := [...]int{1, 2}      // 정수가 2개 저장된 배열
+
+	//  biến a chỉ có 2 phần từ những ở đây đã xuất đến 5 phần tử
+	for i := 0; i < 5; i++ { // 배열 크기를 벗어난 접근 ERROR
+		fmt.Println(a[i])
+	}
+}
+
+func main() {
+	f()
+	checkingRecover()
+	fmt.Println("Hello, world!") // 패닉이 발생했지만 계속 실행됨
+
+	panic("Error !!")
+	fmt.Println("Panic error") // 실행되지 않음
+}
+```
+### <a href="https://github.com/huonghope/learn-go/tree/master/Unit%2028" target="_blank"> Unit 28: Pointer </a> 
+```go
+package main
+
+import "fmt"
+
+func hello(n *int) {
+	*n = 2 // 포인터 변수 n를 역참조하여 메모리에 2를 대입
+}
+
+func main() {
+	var numPtr *int // 포인터형 변수를 선언하면 nil로 초기화됨
+	var numPtrInit *int = new(int)
+
+	fmt.Println(numPtr) // nil
+	fmt.Println(numPtrInit) // 0xc0820062d0: 메모리 주소. 시스템 마다, 실행할 때마다 달라짐
+
+	var numPtrInt *int = new(int)
+	*numPtrInt = 1
+	fmt.Println(*numPtrInt) //1: 포인터 형 변수에서 값을 가져오기
+
+	// Vì ta truyền giá trị tại vị trí memory của biến n, lên biến n ra khỏi hàm cũng sẽ bị thay đổi giá trị
+	var n int = 1
+	hello(&n) // 1이 들어있는 변수 n의 메모리 주소를 hello 함수에 넘김
+	fmt.Println(n) // 2: hello 함수에서 n의 메모리 공간에 2를 대입했으므로 바깥에 있는 n의 값이 바뀌었음
+
+	var num int = 1
+	var numPtr *int = &num //참조로 num변수의 메모리 주소를 구하여 - numPtr 포인터 변수에 대입함
+	
+	fmt.Println(numPtr) // 0xc0820062d0: numPtr 포인터 변수에 저장된 메모리 주소
+	fmt.Println(&num) // 0xc0820062d0: 참조로 num 변수의 메모리 주소를 구함
+}
+```
+### <a href="https://github.com/huonghope/learn-go/tree/master/Unit%2029" target="_blank"> Unit 29: Struct, struct-constructor, struct-func-argument </a>
+```go
+package main
+
+import "fmt"
+
+// Khai báo kiểu dữ liệu struct, c/c++ same
+// Gồm 2 biến giá trị là w & h
+type Rectangle struct {
+	width  int
+	height int
+}
+
+// Khai báo 1 hàm nhận vào 2 giá trị w và h, Sau đó tạo ra 1 biến theo kiểu struct và trờ về giá trị địa chỉ
+// Ở hàm main sẽ lưu địa chỉ đó vào, nhưng là 1 biến mới được tạo thành
+func NewRectangle(width, height int) *Rectangle {
+	return &Rectangle{width, height} // 구조체 인스턴스를 생성한 뒤 포인터를 리턴
+}
+
+func rectangleScaleA(rect *Rectangle, factor int) { // 매개변수로 구조체 포인터를 받음
+	rect.width = rect.width * factor   // 포인터이므로 원래의 값이 변경됨
+	rect.height = rect.height * factor // 포인터이므로 원래의 값이 변경됨
+}
+
+func main() {
+	// Khai báo biến kiểu pointer
+	var rect1 *Rectangle   // 구조체 포인터 선언
+	rect1 = new(Rectangle) // 구조체 포인터에 메모리 할당
+
+	rect2 := new(Rectangle) // 구조체 포인터 선언과 동시에 메모리 할당
+
+	fmt.Println(rect1)
+	fmt.Println(rect2)
+
+	// Các cách khai báo giá trị cho kiểu struct
+	var rect1 Rectangle = Rectangle{10, 20} // 구조체 인스턴스를 생성하면서 값 초기화
+
+	rect2 := Rectangle{45, 62} // var 키워드 생략 구조체 인스턴스를 생성하면서 값 초기화
+
+	// Truyền 2 biến giá trị vào theo kiểu tường minh
+	rect3 := Rectangle{width: 30, height: 15} // 구조체 필드를 지정하여 값 초기화
+
+	fmt.Println(rect1)
+	fmt.Println(rect2)
+	fmt.Println(rect3)
+
+	// 2 kiểu khai báo là giống nhau 
+	// Thông qua hàm khởi tạo ta đã định nghĩa
+	rect := NewRectangle(20, 10)
+	fmt.Println(rect) // &{20 10}
+
+	// Trực tiếp thông qua tử &
+	rect := &Rectangle{20, 10} // 구조체를 초기화한 뒤 메모리 주소를 대입
+	fmt.Println(rect) // &{20 10}
+
+	rectangleScaleA(&rect1, 10) // 구조체의 포인터를 넘김
+	fmt.Println(rect1)          // {300 300}: rect1에 바뀐 값이 들어감
+}
+```
+### <a href="https://github.com/huonghope/learn-go/tree/master/Unit%2030" target="_blank"> Unit 30: Struct, struct-method</a>
+```go
+
+package main
+
+import "fmt"
+
+// Một struct được định nghĩa có 2 giá trị chính
+type Rectangle struct {
+	width  int
+	height int
+}
+
+// Biến đằng trước tên là 1 class, thì hàm được hiểu là 1 method, và con trò sẽ đóng vai trò là this để thay đổi giá của giá biến struct đó
+// Các thay đổi trong hàm area sẽ được phản ánh qua biến khai báo tạo hàm Main
+//          ↓ 리시버 변수 정의(연결할 구조체 지정)
+func (rect *Rectangle) area() int {
+	return rect.width * rect.height
+	//     ↑  리시버 변수를 사용하여 현재 인스턴스에 접근할 수 있음
+}
+
+// Toán tử _ với ý đồ ngầm định là không sử dụng
+func (_ Rectangle) dummy() { // _로 리시버 변수 생략
+	fmt.Println("dummy")
+}
+
+func main() {
+	rect := Rectangle{10, 20}
+
+	fmt.Println(rect.area()) // 200
+
+	// Chỉ in ra 1 hàm print đơn giản
+	var r Rectangle
+	r.dummy() // dummy
+}
+
+
+```
