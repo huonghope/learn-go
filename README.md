@@ -693,6 +693,263 @@ func main() {
 	var r Rectangle
 	r.dummy() // dummy
 }
+```
+### <a href="https://github.com/huonghope/learn-go/tree/master/Unit%2031" target="_blank"> Unit 31: Struct has a, Struct method override</a>
+```go
+package main
 
+import "fmt"
+
+type Person struct { // 사람 구조체 정의
+	name string
+	age  int
+}
+
+func (p *Person) greeting() { // 인사(greeting) 함수 작성
+	fmt.Println("Hello~")
+}
+
+type Student struct {
+	p      Person // 학생 구조체 안에 사람 구조체를 필드로 가지고 있음. Has-a 관계
+	school string
+	grade  int
+}
+
+
+type StudentIsA struct {
+	Person // 필드명 없이 타입만 선언하면 포함(Is-a) 관계가 됨
+	school string
+	grade  int
+}
+func (p *Student) greeting() { // 이름이 같은 메서드를 정의하면 오버라이딩됨
+	fmt.Println("Hello Students~")
+}
+
+// Hàm khai báo biến struct Student đã có keyword là Person, lên có thể truy cập đến hàm greeting đã định nghĩa
+func main() {
+	var s Student
+
+	s.p.greeting() // Hello~
+
+	var sIsa StudentIsA
+
+	sIsa.Person.greeting() // Hello~
+	sIsa.greeting()        // Hello~
+
+	var sOverride StudentIsA
+	sOverride.Person.greeting() // Hello~
+	sOverride.greeting()        // Hello Students~
+}
+
+```
+### <a href="https://github.com/huonghope/learn-go/tree/master/Unit%2031" target="_blank"> Unit 32: Interface, interface-check, interface-duck</a>
+```go
+package main
+
+import "fmt"
+
+type MyInt int // int 형을 MyInt로 정의
+
+func (i MyInt) Print() { // MyInt에 Print 메서드를 연결
+	fmt.Println(i)
+}
+
+type Rectangle struct { // 사각형 구조체 정의
+	width, height int
+}
+
+func (r Rectangle) Print() { // Rectangle에 Print 메서드를 연결
+	fmt.Println(r.width, r.height)
+}
+
+// Thông qua việc định nghĩa interface sẽ gọi đến func tương ứng theo kiểu dữ liệu đã định nghĩa
+type Printer interface { // Print 메서드를 가지는 인터페이스 정의
+	Print()
+}
+
+
+type Person struct { // Person 구조체 정의
+	name string
+	age  int
+}
+
+func main() {
+	var i MyInt = 5
+	r := Rectangle{10, 20}
+
+	var p Printer // 인터페이스 선언
+
+	p = i     // i를 인터페이스 p에 대입
+	p.Print() // 5: 인터페이스 p를 통하여 MyInt의 Print 메서드 호출
+
+	p = r     // r을 인터페이스 p에 대입
+	p.Print() // 10 20: 인터페이스 p를 통하여 Rectangle의 Print 메서드 호출
+
+	var t interface{}
+	t = Person{"Maria", 20}
+
+	// Kiểm tra biến interface, nếu đúng sẽ trả về cho biến ok kiểu boolean (true | false)
+	if v, ok := t.(Person); ok {
+		fmt.Println(v, ok)
+	}
+}
+```
+```go
+package main
+
+import "fmt"
+
+type Duck struct { // 오리(Duck) 구조체 정의
+}
+
+func (d Duck) quack() {     // 오리의 quack 메서드 정의
+	fmt.Println("꽥~!") // 오리 울음 소리
+}
+
+func (d Duck) feathers() { // 오리의 feathers 메서드 정의
+	fmt.Println("오리는 흰색과 회색 털을 가지고 있습니다.")
+}
+
+type Person struct { // 사람(Person) 구조체 정의
+}
+
+func (p Person) quack() {                           // 사람의 quack 메서드 정의
+	fmt.Println("사람은 오리를 흉내냅니다. 꽥~!") // 사람이 오리 소리를 흉내냄
+}
+
+func (p Person) feathers() { // 사람의 feathers 메서드 정의
+	fmt.Println("사람은 땅에서 깃털을 주워서 보여줍니다.")
+}
+
+type Quacker interface { // quack, feathers 메서드를 가지는 Quacker 인터페이스 정의
+	quack()
+	feathers()
+}
+
+// Có thể có 1 hàm để khai báo biến interface chung
+func inTheForest(q Quacker) {
+	q.quack()    // Quacker 인터페이스로 quack 메서드 호출
+	q.feathers() // Quacker 인터페이스로 feathers 메서드 호출
+}
+
+
+//                      ↓ 빈 인터페이스를 사용하여 모든 타입을 받음
+func formatString(arg interface{}) string {
+	//       ↓ 인터페이스에 저장된 타입에 따라 case 실행
+	switch arg.(type) {
+	case int:                      // arg가 int형이라면
+		i := arg.(int)         // int형으로 값을 가져옴
+		return strconv.Itoa(i) // strconv.Itoa 함수를 사용하여 i를 문자열로 변환
+	case float32:                  // arg가 float32형이라면
+		f := arg.(float32)     // float32형으로 값을 가져옴
+		return strconv.FormatFloat(float64(f), 'f', -1, 32) 
+                                       // strconv.FormatFloat 함수를 사용하여 f를 문자열로 변환
+	case float64:                  // arg가 float64형이라면
+		f := arg.(float64)     // float64형으로 값을 가져옴
+		return strconv.FormatFloat(f, 'f', -1, 64)
+                                       // strconv.FormatFloat 함수를 사용하여 f를 문자열로 변환
+	case string:                   // arg가 string이라면
+		s := arg.(string)      // string으로 값을 가져옴
+		return s               // string이므로 그대로 리턴
+	default:
+		return "Error"
+	}
+}
+
+
+type Person struct { // Person 구조체 정의
+	name string
+	age  int
+}
+
+// Nhận vào biến giá trị đó là kiểu dữ liệu bthg, hay là point để xuất râ đúng kiểu dữ liệu phù hợp
+func formatStringType(arg interface{}) string {
+	switch arg.(type) {
+	case Person:               // arg의 타입이 Person이라면
+		p := arg.(Person)  // Person 타입으로 값을 가져옴
+		return p.name + " " + strconv.Itoa(p.age) // 각 필드를 합쳐서 리턴
+	case *Person:              // arg의 타입이 Person 포인터라면
+		p := arg.(*Person) // *Person 타입으로 값을 가져옴
+		return p.name + " " + strconv.Itoa(p.age) // 각 필드를 합쳐서 리턴
+	default:
+		return "Error"
+	}
+}
+
+func main() {
+	var donald Duck
+
+	// Tương tự như ví dụ trên, việc địch nghĩa interface rồi găn vào đó các biến giá trị khác kiểu
+	// Chương trình sẽ tự định nghĩa được kiểu tương ứng để xuất ra
+	// Ở đây ta sẽ có thêm phần kiểm tra dữ kiểu interface
+	if v, ok := interface{}(donald).(Quacker); ok {
+		fmt.Println(v, ok)
+	}
+
+	var donald Duck // 오리 인스턴스 생성
+	var john Person // 사람 인스턴스 생성
+
+	inTheForest(donald) // 인터페이스를 통하여 오리의 quack, feather 메서드 호출
+	inTheForest(john)   // 인터페이스를 통하여 사람의 quack, feather 메서드 호출
+
+
+	fmt.Println(formatString(1))
+	fmt.Println(formatString(2.5))
+	fmt.Println(formatString("Hello, world!"))
+
+	fmt.Println(formatString(Person{"Maria", 20}))
+	fmt.Println(formatString(&Person{"John", 12}))
+
+	var andrew = new(Person)
+	andrew.name = "Andrew"
+	andrew.age = 35
+
+	fmt.Println(formatStringType(andrew))
+}
+
+```
+### <a href="https://github.com/huonghope/learn-go/tree/master/Unit%2031" target="_blank"> Unit 33: Go</a>
+```go
+// A goroutine is a lightweight thread managed by the Go runtime.
+package main
+
+import (
+	"fmt"
+	"runtime"
+)
+
+func main() {
+	runtime.GOMAXPROCS(1) // CPU를 하나만 사용
+
+	s := "Hello, world!"
+
+	for i := 0; i < 100; i++ {
+		go func(n int) {          // 익명 함수를 고루틴으로 실행(클로저)
+			fmt.Println(s, n) // s와 매개변수로 받은 n 값 출력
+		}(i)                      // 반복문의 변수는 매개변수로 넘겨줌
+	}
+
+	fmt.Scanln()
+
+	for i := 0; i < 100; i++ {
+		go func() {
+			fmt.Println(s, i) // 반복문의 변수를 
+                                          // 클로저에서 바로 출력
+		}()
+	}
+
+	runtime.GOMAXPROCS(runtime.NumCPU()) // CPU 개수를 구한 뒤 사용할 최대 CPU 개수 설정
+	fmt.Println(runtime.GOMAXPROCS(0)) // 설정 값 출력
+
+	s := "Hello, world!"
+
+	for i := 0; i < 100; i++ {
+		go func(n int) { // 익명 함수를 고루틴으로 실행
+			fmt.Println(s, n)
+		}(i)
+	}
+
+	fmt.Scanln()
+}
 
 ```

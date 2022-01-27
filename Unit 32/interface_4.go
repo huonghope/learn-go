@@ -16,6 +16,9 @@ func (r Rectangle) Print() { // Rectangle에 Print 메서드를 연결
 	fmt.Println(r.width, r.height)
 }
 
+// Định nghĩa interface và tùy thuộc theo từng biến sẽ gọi dddessn func tương ứng
+// Như ví dụ trên, ví biến đó là MyInt sẽ gọi đến hàm Print() ở trên
+// Và nếu hàm đó là Rectangle thì sẽ gọi đến Print ở dưới
 type Printer interface { // Print 메서드를 가지는 인터페이스 정의
 	Print()
 }

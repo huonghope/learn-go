@@ -13,9 +13,11 @@ func hello(n int) {
 }
 
 func main() {
+	// Định nghĩa 1 thread đơn giản
 	for i := 0; i < 100; i++ { // 100번 반복하여
 		go hello(i)        // 고루틴 100개 생성
 	}
 
+	fmt.Println("Hello, world!")
 	fmt.Scanln()
 }
