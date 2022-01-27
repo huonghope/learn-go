@@ -911,6 +911,7 @@ func main() {
 ### <a href="https://github.com/huonghope/learn-go/tree/master/Unit%2031" target="_blank"> Unit 33: Go</a>
 ```go
 // A goroutine is a lightweight thread managed by the Go runtime.
+// https://judo0179.tistory.com/88
 package main
 
 import (
